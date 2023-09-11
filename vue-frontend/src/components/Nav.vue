@@ -1,11 +1,23 @@
 <template>
     <div class="navbar">
       <router-link :to="{ name: 'Home' }" class="nav-button home-button">Home</router-link>
-      <router-link :to="{ name: 'Login' }" class="nav-button login-button">Login</router-link>
+      <template v-if="!authStore.user">
+        <router-link :to="{ name: 'Login' }" class="nav-button login-button">Login</router-link>
+        <p>You're Loggout</p>
+      </template>
+      <template v-else>
+        <button @click="authStore.logout" class="nav-button login-button">Logout</button>
+        <p>Welcome: {{authStore.user.name}}</p>
+      </template>
+      
     </div>
   </template>
   
   <script setup>
+    import {useAuthStore} from '../stores/auth'
+
+    const authStore = useAuthStore()
+
   </script>
   
   <style>

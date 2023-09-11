@@ -1,6 +1,6 @@
 <template>
     <h1>Login</h1>
-    <form @submit.prevent="onLogin">
+    <form @submit.prevent="authStore.login(form)">
         <div>
             <label for="username">Username</label>
             <input type="text" id="username" placeholder="Email" v-model="form.email"/>
@@ -16,22 +16,19 @@
 
 <script setup>
     import {ref} from 'vue'
-    import axios from 'axios'
-    import {useRouter} from 'vue-router'
+    import { useAuthStore } from '../stores/auth';
 
-    const router = useRouter()
+    const authStore = useAuthStore()
+
     const form = ref({
         username: '',
         password: ''
     })
 
+
     const onLogin = async () => {
-        const data = await axios.post('/login', {
-            email: form.value.email,
-            password: form.value.password
-        })
-        console.log(data)
-        router.push('/')
+
+        await authStore.login(form.value)
     }
 
 </script>
