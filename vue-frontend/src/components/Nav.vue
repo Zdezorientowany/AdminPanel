@@ -2,12 +2,12 @@
     <div class="navbar">
       <router-link :to="{ name: 'Home' }" class="nav-button home-button">Home</router-link>
       <template v-if="!authStore.user">
-        <router-link :to="{ name: 'Login' }" class="nav-button login-button">Login</router-link>
         <p>You're Loggout</p>
+        <router-link :to="{ name: 'Login' }" class="nav-button login-button">Login</router-link>
       </template>
       <template v-else>
-        <button @click="authStore.logout" class="nav-button login-button">Logout</button>
         <p>Welcome: {{authStore.user.name}}</p>
+        <button @click="authStore.logout" class="nav-button login-button">Logout</button>
       </template>
       
     </div>
