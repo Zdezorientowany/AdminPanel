@@ -24,6 +24,7 @@ export const useAuthStore = defineStore({
                 email: data.email,
                 password: data.password
             })
+            this.getUser()
             this.router.push({name: 'Home'})
         },
         async logout(){

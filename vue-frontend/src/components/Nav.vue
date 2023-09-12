@@ -1,54 +1,81 @@
 <template>
-    <div class="navbar">
-      <router-link :to="{ name: 'Home' }" class="nav-button home-button">Home</router-link>
-      <template v-if="!authStore.user">
-        <p>You're Loggout</p>
-        <router-link :to="{ name: 'Login' }" class="nav-button login-button">Login</router-link>
-      </template>
-      <template v-else>
-        <p>Welcome: {{authStore.user.name}}</p>
-        <button @click="authStore.logout" class="nav-button login-button">Logout</button>
-      </template>
-      
-    </div>
-  </template>
-  
-  <script setup>
-    import {useAuthStore} from '../stores/auth'
+  <div class="navbar">
+    <router-link :to="{ name: 'Home' }" class="nav-button home-button">Home</router-link>
 
-    const authStore = useAuthStore()
+    <template v-if="!authStore.user"> <!-- Show if user is not logged in -->
+      <span class="login-text">You're Logged Out</span>
+      <router-link :to="{ name: 'Login' }" class="nav-button login-button">
+        Log In
+      </router-link>
+    </template>
 
-  </script>
-  
-  <style>
-  .navbar {
-    background-color: #662549; /* Set the background color */
-    border-radius: 0 0 15px 15px; /* Rounded bottom corners */
-    display: flex;
-    justify-content: space-between; /* Push the buttons to the corners */
-    padding: 10px;
-  }
-  
-  .nav-button {
-    padding: 10px 20px; /* Add padding to create a button-like appearance */
-    color: white;
-    text-decoration: none;
-    border-radius: 5px; /* Rounded corners for the buttons */
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
-  
-  }
-  
-  .home-button {
-    background-color: #451952; /* Button color for Home */
-  }
-  
-  .login-button {
-    background-color: #AE445A; /* Button color for Login */
-  }
-  
-  /* Hover effect */
-  .nav-button:hover {
-    background-color: #F39F5A;
-  }
-  </style>
-  
+    <template v-else> <!-- Show if user is logged in -->
+
+      <router-link :to="{ name: 'USERPANEL' }" class="nav-button user-panel-button">
+        User Panel
+      </router-link>
+      <span class="welcome-text">Welcome: {{ authStore.user.name }}</span>
+      <button @click="authStore.logout" class="nav-button login-button">
+        <span>Logout</span>
+      </button>
+    </template>
+  </div>
+</template>
+
+<script setup>
+import { useAuthStore } from '../stores/auth'
+
+const authStore = useAuthStore()
+</script>
+
+<style>
+.navbar {
+  background-color: #662549;
+  border-radius: 0 0 15px 15px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.nav-button {
+  padding: 10px 20px;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.home-button,
+.user-panel-button,
+.logout-button {
+  margin-right: 10px;
+}
+
+.home-button {
+  background-color: #451952;
+}
+
+.login-button {
+  background-color: #AE445A;
+  margin-right: 0; /* Remove the margin for the Login button */
+}
+
+.nav-button:hover {
+  background-color: #F39F5A;
+}
+
+/* Adjust the appearance of the text within the buttons */
+.login-text,
+.logout-text,
+.welcome-text {
+  padding: 5px 10px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  margin-right: 5px;
+}
+
+/* Make the "You're Logged Out" text stick to the "Login" button */
+.logout-text {
+  margin-left: -5px; /* Adjust as needed for proper alignment */
+}
+</style>

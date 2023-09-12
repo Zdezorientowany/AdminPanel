@@ -2,8 +2,8 @@
     <h1>Login</h1>
     <form @submit.prevent="authStore.login(form)">
         <div>
-            <label for="username">Username</label>
-            <input type="text" id="username" placeholder="Email" v-model="form.email"/>
+            <label for="email">Email</label>
+            <input type="email" id="username" placeholder="Email" v-model="form.email"/>
         </div>
         <div>
             <label for="password">Password</label>
@@ -24,12 +24,6 @@
         username: '',
         password: ''
     })
-
-
-    const onLogin = async () => {
-
-        await authStore.login(form.value)
-    }
 
 </script>
 
