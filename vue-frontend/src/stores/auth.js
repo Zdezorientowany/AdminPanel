@@ -30,6 +30,7 @@ export const useAuthStore = defineStore({
         async logout(){
             await axios.post('/logout')
             this.authUser = null
+            this.router.push({name: 'Home'})
         }
 
     }

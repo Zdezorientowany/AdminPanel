@@ -1,6 +1,9 @@
 <template>
-  <div v-if="isFormShowed">
+  <div v-if="isAddFormShowed">
     <CreateUser @addUser="UpdateUsers"/>
+  </div>
+  <div v-if="isEditFormShowed">
+    <EditUser @editUser="UpdateUsers" v-bind:user="userToEdit" />
   </div>
   <div>
     <table class="table">
@@ -12,7 +15,7 @@
           <th>Email</th>
           <th>Email Verified</th>
           <th>Created At</th>
-          <th>Actions <button @click="addUser()">Add User</button></th>
+          <th>Actions <button @click="addUser()" :disabled="isEditFormShowed">Add User</button></th>
         </tr>
       </thead>
       <tbody>
@@ -24,7 +27,7 @@
           <td>{{ user.email_verified_at ? 'Yes' : 'No' }}</td>
           <td>{{ user.created_at }}</td>
           <td>
-            <button @click="editUser(user)">Edit</button>
+            <button @click="editUser(user)" :disabled="isAddFormShowed">Edit</button>
             <button @click="deleteUser(user)">Delete</button>
           </td>
         </tr>
@@ -38,12 +41,15 @@
   import { ref, onMounted } from 'vue';
   import { useAuthStore } from '../../stores/auth';
   import CreateUser from './CreateUser.vue'
+  import EditUser from './EditUser.vue'
   
-  let isFormShowed = ref(false)
+  let isAddFormShowed = ref(false)
+  let isEditFormShowed = ref(false)
 
   const authStore = useAuthStore()
 
   const users = ref([])
+  let userToEdit = ref(null)
 
   onMounted(async () => {
     await authStore.getUser()
@@ -54,19 +60,35 @@
 
   const addUser = () => {
     console.log('add user')
-    isFormShowed.value = true
+    isAddFormShowed.value = true
     
   }
 
   const UpdateUsers = (userData) => {
     console.log('update users')
-    isFormShowed.value = false
-    users.value.push(userData);
+    if(isAddFormShowed.value){
+      console.log('user was added', userData)
+      isAddFormShowed.value = false
+      users.value.push(userData);
+    }
+    if(isEditFormShowed.value){
+      console.log('user was edited', userData)
+      isEditFormShowed.value = false
 
+      //update user in users array
+      users.value[userToEdit.id-1].name = userData.name
+      users.value[userToEdit.id-1].role = userData.role
+      users.value[userToEdit.id-1].email = userData.email
+      
+    }
   }
+
+
 
   const editUser = (user) => {
     console.log('edit user', user)
+    userToEdit = user
+    isEditFormShowed.value = true
   }
   const deleteUser = async (user) => {
     await axios.delete(`/api/users/${user.id}`);
