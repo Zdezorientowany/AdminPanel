@@ -17,6 +17,11 @@ const routes = [
         name: 'USERPANEL',
         component: () => import('../components/Users/UserPanel.vue')
     },
+    {
+        path: '/content-panel',
+        name: 'CONTENTPANEL',
+        component: () => import('../components/Content/ContentPanel.vue')
+    },
 
 ]
 

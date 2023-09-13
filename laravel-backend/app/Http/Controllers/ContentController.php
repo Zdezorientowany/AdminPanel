@@ -7,16 +7,19 @@ use Illuminate\Http\Request;
 use App\Models\Content;
 
 
+
 class ContentController extends Controller
 {
-    public function index()
-    {
-        return Content::all();
-    }
-
     public function show(Content $content)
     {
         return $content;
+    }
+
+    public function showAll()
+    {
+        $contents = Content::all();
+
+        return response($contents,200);
     }
 
     public function store(Request $request)
@@ -33,10 +36,10 @@ class ContentController extends Controller
         return response()->json($content, 200);
     }
 
-    public function delete(Content $content)
+    public function destroy(Content $content)
     {
         $content->delete();
 
-        return response()->json(null, 204);
+        return response()->noContent();
     }
 }

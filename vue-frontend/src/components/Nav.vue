@@ -14,6 +14,9 @@
       <router-link :to="{ name: 'USERPANEL' }" class="nav-button user-panel-button">
         User Panel
       </router-link>
+      <router-link :to="{ name: 'CONTENTPANEL' }" class="nav-button user-panel-button">
+        Content Panel
+      </router-link>
       <span class="welcome-text">Welcome: {{ authStore.user.name }}</span>
       <button @click="authStore.logout" class="nav-button login-button">
         <span>Logout</span>

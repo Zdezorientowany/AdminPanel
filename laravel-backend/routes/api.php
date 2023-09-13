@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ContentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,3 +44,14 @@ Route::delete('/user/{user}', [UserController::class, 'destroy'])
     ->middleware('auth')
     ->name('user.destroy');
 
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::resource('contents', ContentController::class);
+});
+
+Route::get('/contents', [ContentController::class, 'showAll'])
+    ->middleware('auth')
+    ->name('contents.showAll');
+
+Route::delete('/content/{content}', [ContentController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('content.destroy');
