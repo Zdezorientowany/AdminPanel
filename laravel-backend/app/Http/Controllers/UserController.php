@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -56,8 +57,8 @@ class UserController extends Controller
         $request->validate([
             'name' => ['string', 'max:255'],
             'role' => ['string', 'max:255'],
-            'email' => ['string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['confirmed', Rules\Password::defaults()],
+            'email' => ['string', 'email', 'max:255',  Rule::unique('users', 'email')->ignore($user),],
+            'password' => ['nullable','confirmed', Rules\Password::defaults()],
         ]);
 
         $user->update($request->all());
