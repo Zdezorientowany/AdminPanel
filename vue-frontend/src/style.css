@@ -61,40 +61,23 @@
   }
 
   #app {
-  /* max-width: 1280px; */
   margin: 0 auto;
   padding: 0;
   text-align: center;
   }
 
-  /* @media (prefers-color-scheme: light) {
-  :root {
-  color: #213547;
-  background-color: #ffffff;
-  }
-  a:hover {
-  color: #747bff;
-  }
-  button {
-  background-color: #f9f9f9;
-  }
-  }  */
-
-  /* Form styling */
   form {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
   }
 
-  /* Label styling */
   label {
   color: white;
   font-weight: bold;
   margin-bottom: 5px;
   }
 
-  /* Input and textarea styling */
   input[type="text"],
   textarea,
   input[type="date"],
@@ -103,9 +86,9 @@
   padding: 10px;
   border: none;
   border-radius: 5px;
-  width: 100%; /* Make all input fields expand to full width */
+  width: 100%;
   background-color: #F39F5A;
-  box-sizing: border-box; /* Ensure padding doesn't affect width */
+  box-sizing: border-box;
   }
 
   input[type="date"] {
@@ -113,7 +96,6 @@
   color: white;
   }
 
-  /* Tags styling */
   .form-group {
   position: relative;
   }
@@ -131,7 +113,6 @@
   color: white;
   }
 
-  /* Submit button styling */
   button[type="submit"] {
   background-color: #AE445A;
   color: white;
@@ -140,7 +121,7 @@
   padding: 10px;
   margin-top: 10px;
   cursor: pointer;
-  width: 100%; /* Make the submit button expand to full width */
+  width: 100%;
   }
 
   .tags_layout {
@@ -153,17 +134,16 @@
   cursor: pointer;
   }
 
-  /* Container styling */
   .container {
   max-width: 400px;
   margin: 0 auto;
+  margin-top: 10px;
   padding: 20px;
   background-color: #662549;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   }
 
-  /* Header styling */
   h1 {
     color: #AE445A;
     text-align: center;

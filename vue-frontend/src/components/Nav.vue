@@ -10,13 +10,14 @@
     </template>
 
     <template v-else> <!-- Show if user is logged in -->
-
-      <router-link :to="{ name: 'USERPANEL' }" class="nav-button user-panel-button">
-        User Panel
-      </router-link>
-      <router-link :to="{ name: 'CONTENTPANEL' }" class="nav-button user-panel-button">
-        Content Panel
-      </router-link>
+      <template v-if="authStore.user.role === 'admin'"> 
+        <router-link :to="{ name: 'USERPANEL' }" class="nav-button user-panel-button">
+          User Panel
+        </router-link>
+        <router-link :to="{ name: 'CONTENTPANEL' }" class="nav-button user-panel-button">
+          Content Panel
+        </router-link>
+      </template>
       <span class="welcome-text">Welcome: {{ authStore.user.name }}</span>
       <button @click="authStore.logout" class="nav-button login-button">
         <span>Logout</span>
@@ -60,14 +61,13 @@ const authStore = useAuthStore()
 
 .login-button {
   background-color: #AE445A;
-  margin-right: 0; /* Remove the margin for the Login button */
+  margin-right: 0;
 }
 
 .nav-button:hover {
   background-color: #F39F5A;
 }
 
-/* Adjust the appearance of the text within the buttons */
 .login-text,
 .logout-text,
 .welcome-text {
@@ -77,8 +77,7 @@ const authStore = useAuthStore()
   margin-right: 5px;
 }
 
-/* Make the "You're Logged Out" text stick to the "Login" button */
 .logout-text {
-  margin-left: -5px; /* Adjust as needed for proper alignment */
+  margin-left: -5px;
 }
 </style>
