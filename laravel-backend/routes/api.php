@@ -55,3 +55,12 @@ Route::get('/contents', [ContentController::class, 'showAll'])
 Route::delete('/content/{content}', [ContentController::class, 'destroy'])
     ->middleware('auth')
     ->name('content.destroy');
+
+Route::post('/content/create', [ContentController::class, 'store'])
+    ->middleware('auth')
+    ->name('content.create');
+
+Route::put('/content/{content}', [ContentController::class, 'update'])
+    ->middleware('auth')
+    ->name('content.update');
+

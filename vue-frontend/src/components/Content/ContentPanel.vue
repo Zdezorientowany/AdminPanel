@@ -1,11 +1,11 @@
 <template>
-      <div v-if="isAddFormShowed">
+    <div v-if="isAddFormShowed">
+        <CreateContent />
+    </div>
+    <div v-if="isEditFormShowed">
 
-  </div>
-  <div v-if="isEditFormShowed">
-
-  </div>
-  <div>
+    </div>
+    <div>
     <table class="table">
       <thead>
         <tr>
@@ -40,6 +40,7 @@
     import axios from 'axios';
     import { ref, onMounted } from 'vue';
     import { useAuthStore } from '../../stores/auth';
+    import CreateContent from './CreateContent.vue'
 
     let isAddFormShowed = ref(false)
     let isEditFormShowed = ref(false)
