@@ -4,8 +4,12 @@ import Home from '../components/Home.vue'
 
 function isAdmin(to, from, next){
     const authStore = useAuthStore()
-    if(authStore.user.role === 'admin'){
-        next()
+    if(authStore.user != null){ 
+        if(authStore.user.role === 'admin'){
+            next()
+        }else{
+            next({name: 'Home'})
+        }
     }else{
         next({name: 'Home'})
     }
@@ -13,8 +17,12 @@ function isAdmin(to, from, next){
 
 function isUser(to, from, next){
     const authStore = useAuthStore()
-    if(authStore.user.role === 'user'){
-        next()
+    if(authStore.user != null){ 
+        if(authStore.user.role === 'user'){
+            next()
+        }else{
+            next({name: 'Home'})
+        }
     }else{
         next({name: 'Home'})
     }

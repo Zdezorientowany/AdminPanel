@@ -111,7 +111,6 @@
 
         }
         if(isEditFormShowed.value){
-            console.log('content was edited', contents.value[contentToEdit.value.id - 1].title)
             isEditFormShowed.value = false
             contents.value[contentToEdit.value.id - 1].title = content.title
             contents.value[contentToEdit.value.id - 1].content = content.content

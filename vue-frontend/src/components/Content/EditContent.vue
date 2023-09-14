@@ -4,15 +4,15 @@
         <form @submit.prevent="EditContent()">
         <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" id="title" placeholder="Title" v-model="form.title" />
+            <input type="text" id="title" placeholder="Title" v-model="form.title" required/>
         </div>
         <div class="form-group">
             <label for="content">Content</label>
-            <textarea id="content" placeholder="Lorem Ipsum dolor..." rows="4" v-model="form.content"></textarea>
+            <textarea id="content" placeholder="Lorem Ipsum dolor..." rows="4" v-model="form.content" required></textarea>
         </div>
         <div class="form-group">
             <label for="publishDate">Publish Date</label>
-            <input type="date" id="publishDate" placeholder="Publish Date" v-model="form.publish_date"/>
+            <input type="date" id="publishDate" placeholder="Publish Date" v-model="form.publish_date" required/>
         </div>
         <div class="form-group">
             <label for="tags">Tags (type tag then press ALT + COMMA)</label>
@@ -21,6 +21,8 @@
                 <span @click="deleteTag(tag)">{{ tag }}</span>
             </div>
         </div>
+
+        <div v-if="error" class="error-message">{{ error }}</div>
 
         <button type="submit">Edit</button>
         </form>
@@ -42,17 +44,23 @@
                     publish_date: '',
                     tags: []
                 },
+                error: null,
             };
         },
         mounted() {
-                console.log('edit content:', this.content)
                 this.form = this.content;
             },
         methods: {
             async EditContent() {
-                console.log('create content:', this.form);
-                const data = await axios.put(`/api/content/${this.content.id}`, this.form);
-                this.$emit('editContent', data.data);
+                try{
+                    const data = await axios.put(`/api/content/${this.content.id}`, this.form);
+                    this.$emit('editContent', data.data);
+                    this.error = null;
+                }
+                catch(error){
+                    this.error = 'Error: '+ error.response.data.message+'. Please try again.';
+                }
+
             },
 
             addTag(e) {

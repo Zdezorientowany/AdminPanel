@@ -21,6 +21,8 @@
             <span @click="deleteTag(tag)">{{ tag }}</span>
           </div>
         </div>
+
+        <div v-if="error" class="error-message">{{ error }}</div>
   
         <button type="submit">Add</button>
       </form>
@@ -41,13 +43,20 @@
                     publish_date: '',
                     tags: []
                 },
+                error: null,
             };
         },
         methods: {
             async CreateContent() {
-                console.log('create content:', this.form);
+              try{
                 const data = await axios.post('/api/content/create', this.form);
                 this.$emit('addContent', data.data);
+                this.error = null;
+              }
+              catch(error){
+                    this.error = 'Error: '+ error.response.data.message+'. Please try again.';
+              }
+
             },
 
             addTag(e) {

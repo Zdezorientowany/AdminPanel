@@ -148,3 +148,44 @@
     color: #AE445A;
     text-align: center;
   }
+
+  select {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    background-color: #F39F5A;
+    color: white;
+    box-sizing: border-box;
+    appearance: none;
+    background-image: url('your-arrow-icon.png');
+    background-repeat: no-repeat;
+    background-position: right center;
+    cursor: pointer;
+  }
+  
+  select:hover {
+    border-color: #646cff;
+  }
+  
+  select:focus,
+  select:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+  }
+  
+  select::-ms-expand {
+    display: none; 
+  }
+
+  select option {
+    background-color: #F39F5A;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .error-message {
+    color: red;
+    margin-top: 10px;
+  }
