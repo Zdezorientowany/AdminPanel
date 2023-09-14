@@ -19,7 +19,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="user in users" :key="user.id">
+        <tr v-for="user in paginatedUsers" :key="user.id">
           <td>{{ user.id }}</td>
           <td>{{ user.role }}</td>
           <td>{{ user.name }}</td>
@@ -33,12 +33,20 @@
         </tr>
       </tbody>
     </table>
+
+    <!-- Pagination controls -->
+    <div class="pagination">
+      <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
+    </div>
+
   </div>
 </template>
 
 <script setup>
   import axios from 'axios';
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, computed } from 'vue';
   import { useAuthStore } from '../../stores/auth';
   import CreateUser from './CreateUser.vue'
   import EditUser from './EditUser.vue'
@@ -50,6 +58,8 @@
 
   const users = ref([])
   let userToEdit = ref(null)
+  const perPage = ref(10); 
+  let currentPage = ref(1);
 
   onMounted(async () => {
     await authStore.getUser()
@@ -57,6 +67,26 @@
     const response = await axios.get('/api/users');
     users.value = response.data;
   })
+
+    const paginatedUsers = computed(() => {
+      const startIndex = (currentPage.value - 1) * perPage.value;
+      const endIndex = startIndex + perPage.value;
+      return users.value.slice(startIndex, endIndex);
+    });
+
+  const totalPages = computed(() => Math.ceil(users.value.length / perPage.value));
+
+  const prevPage = () => {
+    if (currentPage.value > 1) {
+      currentPage.value -= 1;
+    }
+  };
+
+  const nextPage = () => {
+    if (currentPage.value < totalPages.value) {
+      currentPage.value += 1;
+    }
+  };
 
   const addUser = () => {
     console.log('add user')

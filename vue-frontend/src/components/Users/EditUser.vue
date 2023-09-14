@@ -51,6 +51,10 @@
             },
             };
         },
+        mounted() {
+                console.log('edit content:', this.content)
+                this.form = this.user;
+            },
         methods: {
             async EditUser() {
             console.log('edit user:', this.form);

@@ -2,10 +2,12 @@
     <div class="content-list">
         <div class="content-item" v-for="content in contents" :key="content.id">
         <h2>{{ content.title }}</h2>
+        <hr/>
         <div>{{ content.content }}</div>
+        <hr/>
         <p>published: {{ content.publish_date }}</p>
         <div class="tags">
-            Tags: <span v-for="tag in content.tags" :key="tag.id">{{ tag.name }}</span>
+            Tags: <span v-for="tag in content.tags" :key="tag.id" class="tags_layout">{{ tag.name }}</span>
         </div>
         </div>
     </div>

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('content_tags', function (Blueprint $table) {
+        Schema::create('content_tag', function (Blueprint $table) {
             $table->unsignedBigInteger('content_id')->unsigned();
             $table->foreign('content_id')->references('id')->on('contents')->onDelete('cascade');
             $table->unsignedBigInteger('tag_id')->unsigned();
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('content_tags');
+        Schema::dropIfExists('content_tag');
     }
 };

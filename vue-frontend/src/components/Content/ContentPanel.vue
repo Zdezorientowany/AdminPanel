@@ -1,9 +1,10 @@
 <template>
     <div v-if="isAddFormShowed">
-        <CreateContent />
+        <CreateContent @addContent="UpdateContents"/>
     </div>
-    <div v-if="isEditFormShowed">
 
+    <div v-if="isEditFormShowed">
+        <EditContent :content="contentToEdit" @editContent="UpdateContents"/>
     </div>
     <div>
     <table class="table">
@@ -19,41 +20,74 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="content in contents" :key="content.id">
-            <td>{{ content.id }}</td>
-            <td>{{ content.title }}</td>
-            <td>{{ content.content }}</td>
-            <td>{{ content.publish_date }}</td>
-            <td>{{ content.created_at }}</td>
-            <td>{{ content.tags }}</td>
-            <td>
-            <button @click="editContent(content)" :disabled="isAddFormShowed">Edit</button>
-            <button @click="deleteContent(content)">Delete</button>
-          </td>
+        <tr v-for="content in paginatedContents" :key="content.id">
+                <td>{{ content.id }}</td>
+                <td>{{ content.title }}</td>
+                <td>{{ content.content }}</td>
+                <td>{{ content.publish_date }}</td>
+                <td>{{ content.created_at }}</td>
+                <td>
+                <span v-for="tag in content.tags" :key="tag.id" class="tags_layout">{{ tag}}</span>  
+                </td>
+                <td>
+                <button @click="editContent(content)" :disabled="isAddFormShowed">Edit</button>
+                <button @click="deleteContent(content)">Delete</button>
+            </td>
         </tr>
       </tbody>
     </table>
+
+    <!-- Pagination controls -->
+    <div class="pagination">
+      <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
+    </div>
+
   </div>
 </template>
   
 <script setup>
     import axios from 'axios';
-    import { ref, onMounted } from 'vue';
-    import { useAuthStore } from '../../stores/auth';
+    import { ref, onMounted, computed } from 'vue';
     import CreateContent from './CreateContent.vue'
+    import EditContent from './EditContent.vue'
 
     let isAddFormShowed = ref(false)
     let isEditFormShowed = ref(false)
 
-    // const authStore = useAuthStore()
-
     const contents = ref([])
-    let userToEdit = ref(null)
+    let contentToEdit = ref(null)
+    const perPage = ref(10); // Number of items per page
+    let currentPage = ref(1);
 
     onMounted(async () => {
         const response = await axios.get('/api/contents');
         contents.value = response.data;
+        contents.value.forEach(content => {
+            content.tags = content.tags.map(tag => tag.name)
+        })
     })
+
+    const paginatedContents = computed(() => {
+        const startIndex = (currentPage.value - 1) * perPage.value;
+        const endIndex = startIndex + perPage.value;
+        return contents.value.slice(startIndex, endIndex);
+    });
+
+    const totalPages = computed(() => Math.ceil(contents.value.length / perPage.value));
+
+    const prevPage = () => {
+        if (currentPage.value > 1) {
+            currentPage.value -= 1;
+        }
+    };
+
+    const nextPage = () => {
+        if (currentPage.value < totalPages.value) {
+            currentPage.value += 1;
+        }
+    };
 
     function addContent() {
         isAddFormShowed.value = true
@@ -61,7 +95,7 @@
 
     function editContent(content) {
         isEditFormShowed.value = true
-        userToEdit.value = content
+        contentToEdit.value = content
     }
 
     function deleteContent(content) {
@@ -69,8 +103,22 @@
         contents.value.splice(contents.value.indexOf(content), 1)
     }
 
+    function UpdateContents(content) {
+        if(isAddFormShowed.value){
+            isAddFormShowed.value = false
+            content.tags = content.tags.map(tag => tag.name)
+            contents.value.push(content);
 
-
+        }
+        if(isEditFormShowed.value){
+            console.log('content was edited', contents.value[contentToEdit.value.id - 1].title)
+            isEditFormShowed.value = false
+            contents.value[contentToEdit.value.id - 1].title = content.title
+            contents.value[contentToEdit.value.id - 1].content = content.content
+            contents.value[contentToEdit.value.id - 1].publish_date = content.publish_date
+            contents.value[contentToEdit.value.id - 1].tags = content.tags.map(tag => tag.name)
+        }
+    }
 
 </script>
    

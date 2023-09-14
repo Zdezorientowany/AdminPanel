@@ -12,7 +12,7 @@
         </div>
         <div class="form-group">
           <label for="publishDate">Publish Date</label>
-          <input type="date" id="publishDate" placeholder="Publish Date" v-model="form.publishDate"/>
+          <input type="date" id="publishDate" placeholder="Publish Date" v-model="form.publish_date"/>
         </div>
         <div class="form-group">
           <label for="tags">Tags (type tag then press ALT + COMMA)</label>
@@ -31,14 +31,14 @@
     import axios from 'axios';
 
     export default {
-        // emits: ['addUser'],
+        emits: ['addContent'],
         data() {
             return {
                 tempTags: '',
                 form: {
                     title: '',
                     content: '',
-                    publishDate: '',
+                    publish_date: '',
                     tags: []
                 },
             };
@@ -46,8 +46,8 @@
         methods: {
             async CreateContent() {
                 console.log('create content:', this.form);
-                // const data = await axios.post('/api/user/create', this.form);
-                // this.$emit('addUser', data.data);
+                const data = await axios.post('/api/content/create', this.form);
+                this.$emit('addContent', data.data);
             },
 
             addTag(e) {
